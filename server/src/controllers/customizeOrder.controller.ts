@@ -6,7 +6,7 @@
 
 import { Request, Response } from 'express';
 import { CustomizeOrder } from '../models/index.js';
-import { NodemailerService } from '../services/index.js';
+import { EmailService } from '../services/index.js';
 import { ApiResponse, asyncHandler } from '../utils/index.js';
 
 /**
@@ -57,7 +57,7 @@ export const createCustomizeOrder = asyncHandler(async (req: Request, res: Respo
   });
 
   // Trigger admin email notification asynchronously in the background (prevent blocking response)
-  NodemailerService.sendCustomizeOrderEmail({
+  EmailService.sendCustomizeOrderEmail({
     name: name.trim(),
     email: email.trim().toLowerCase(),
     phone: phone.trim(),
@@ -65,7 +65,7 @@ export const createCustomizeOrder = asyncHandler(async (req: Request, res: Respo
     productId: productId.trim(),
     message: message.trim(),
   }).catch((error) => {
-    console.error('Nodemailer background job failed:', error);
+    console.error('Email notification background job failed:', error);
   });
 
   res.status(201).json(
