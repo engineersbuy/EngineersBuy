@@ -56,7 +56,9 @@ export const createCustomizeOrder = asyncHandler(async (req: Request, res: Respo
     productId: productId.trim(),
   });
 
-  // Trigger admin email notification asynchronously in the background (prevent blocking response)
+  // Email notification is triggered directly from the frontend calling a PHP mailer script on Hostinger 
+  // to bypass Render's free tier SMTP port block.
+  /*
   EmailService.sendCustomizeOrderEmail({
     name: name.trim(),
     email: email.trim().toLowerCase(),
@@ -67,6 +69,7 @@ export const createCustomizeOrder = asyncHandler(async (req: Request, res: Respo
   }).catch((error) => {
     console.error('Email notification background job failed:', error);
   });
+  */
 
   res.status(201).json(
     new ApiResponse(
