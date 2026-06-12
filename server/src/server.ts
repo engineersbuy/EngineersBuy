@@ -6,10 +6,14 @@
 // ============================================================================
 
 import http from 'http';
+import dns from 'dns';
 import app from './app.js';
 import { env } from './config/env.js';
 import { connectDatabase, disconnectDatabase } from './config/db.js';
 import { logger } from './utils/index.js';
+
+// Force DNS resolution to prefer IPv4 first, preventing ENETUNREACH errors on IPv6-only records in cloud envs (like Render)
+dns.setDefaultResultOrder('ipv4first');
 
 let server: http.Server;
 
