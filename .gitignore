@@ -67,3 +67,4 @@ firebase-debug.log
 .netlify
 debug_plan.md
 *.md
+client/.htaccess

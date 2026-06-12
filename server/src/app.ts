@@ -23,6 +23,7 @@ import {
 } from './middlewares/index.js';
 import apiRoutes from './routes/index.js';
 import { ApiResponse } from './utils/index.js';
+import { CustomizeOrderController } from './controllers/index.js';
 
 // helmet ships as CommonJS; resolve its callable export across interop/version differences
 const helmet: any = (helmetImport as any).default ?? helmetImport;
@@ -85,6 +86,8 @@ app.get('/health/ready', (req, res) => {
 setupSwagger(app);
 
 // 9. Mount modular API endpoints
+app.post('/api/customize-order', CustomizeOrderController.createCustomizeOrder);
+app.post('/api/v1/customize-order', CustomizeOrderController.createCustomizeOrder);
 app.use('/api/v1', apiRoutes);
 
 // 10. Route not found fallback (404)

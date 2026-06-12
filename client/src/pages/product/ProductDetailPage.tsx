@@ -1,6 +1,7 @@
+import { useState } from 'react'
 import { useParams, Link, useNavigate, useLocation } from 'react-router'
 import { motion } from 'framer-motion'
-import { ArrowLeft, RefreshCw, PackageX } from 'lucide-react'
+import { ArrowLeft, RefreshCw, PackageX, Sliders } from 'lucide-react'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
 import { useProductBySlug } from '@/hooks/useProductDetail'
@@ -18,6 +19,7 @@ import {
 } from './sections'
 import { fadeInUp, staggerContainer } from '@/config/animations'
 import toast from 'react-hot-toast'
+import CustomizeOrderModal from '@/components/product/CustomizeOrderModal'
 
 // ─── Product Detail Skeleton ────────────────────────────────────────────────────
 
@@ -56,6 +58,7 @@ function ProductDetailSkeleton() {
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const { data: product, isLoading, isError, refetch } = useProductBySlug(slug || '')
+  const [isCustomizeOpen, setIsCustomizeOpen] = useState(false)
 
   // Track recently viewed
   useTrackView(product)
@@ -162,7 +165,7 @@ export default function ProductDetailPage() {
         <motion.div variants={fadeInUp} className="space-y-8">
           <ProductInfo product={product} />
 
-          <div className="border-t border-border pt-6">
+          <div className="border-t border-border pt-6 space-y-4">
             <AddToCart
               product={product}
               isWishlisted={isInWishlist(product._id)}
@@ -171,6 +174,16 @@ export default function ProductDetailPage() {
               onBuyNow={handleBuyNow}
               onWishlistToggle={handleWishlistToggle}
             />
+            
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-full gap-2 border-primary/20 text-primary hover:bg-primary/5 hover:text-primary transition-all duration-200"
+              onClick={() => setIsCustomizeOpen(true)}
+            >
+              <Sliders className="h-4 w-4" />
+              Customize Your Order
+            </Button>
           </div>
 
 
@@ -245,6 +258,13 @@ export default function ProductDetailPage() {
       >
         <RecentlyViewedProducts currentProductId={product._id} />
       </motion.div>
+
+      <CustomizeOrderModal
+        isOpen={isCustomizeOpen}
+        onClose={() => setIsCustomizeOpen(false)}
+        productName={product.name}
+        productId={product._id}
+      />
     </div>
   )
 }

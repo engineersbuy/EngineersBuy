@@ -153,6 +153,19 @@ const envSchema = z.object({
     .describe('Default sender address for transactional emails'),
 
   // -----------------------------------------------------------------------
+  // Nodemailer (Customization Email Notifications)
+  // -----------------------------------------------------------------------
+  EMAIL_USER: z
+    .string()
+    .optional()
+    .describe('Nodemailer SMTP user email'),
+
+  EMAIL_PASS: z
+    .string()
+    .optional()
+    .describe('Nodemailer SMTP password'),
+
+  // -----------------------------------------------------------------------
   // Rate Limiting
   // -----------------------------------------------------------------------
   RATE_LIMIT_WINDOW_MS: z

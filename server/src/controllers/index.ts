@@ -20,3 +20,4 @@ export * as BannerController from './banner.controller.js';
 export * as AnalyticsController from './analytics.controller.js';
 export * as UploadController from './upload.controller.js';
 export * as VendorController from './vendor.controller.js';
+export * as CustomizeOrderController from './customizeOrder.controller.js';
