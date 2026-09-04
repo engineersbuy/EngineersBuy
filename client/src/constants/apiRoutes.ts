@@ -110,6 +110,13 @@ const API_ROUTES = {
     ADMIN_BY_ID: (id: string) => `/banners/admin/${id}`,
   },
 
+  // Valuable Customers
+  VALUABLE_CUSTOMERS: {
+    BASE: '/valuable-customers',
+    ADMIN: '/valuable-customers/admin',
+    ADMIN_BY_ID: (id: string) => `/valuable-customers/admin/${id}`,
+  },
+
   // Analytics
   ANALYTICS: {
     DASHBOARD: '/analytics/dashboard',

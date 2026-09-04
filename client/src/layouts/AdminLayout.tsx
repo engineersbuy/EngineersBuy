@@ -17,6 +17,7 @@ import {
   Menu,
   Store,
   ClipboardCheck,
+  Award,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { APP } from '@/constants'
@@ -37,6 +38,7 @@ const sidebarLinks = [
   { label: 'Review Queue', href: '/admin/review-queue', icon: ClipboardCheck },
   { label: 'Coupons', href: '/admin/coupons', icon: Ticket },
   { label: 'Banners', href: '/admin/banners', icon: Image },
+  { label: 'Valuable Customers', href: '/admin/valuable-customers', icon: Award },
   { label: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
   { label: 'Settings', href: '/admin/settings', icon: Settings },
 ]

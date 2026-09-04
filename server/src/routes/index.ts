@@ -23,6 +23,7 @@ import uploadRoutes from './upload.routes.js';
 import searchRoutes from './search.routes.js';
 import vendorRoutes from './vendor.routes.js';
 import adminVendorRoutes from './adminVendor.routes.js';
+import valuableCustomerRoutes from './valuableCustomer.routes.js';
 
 const router = Router();
 
@@ -39,6 +40,7 @@ router.use('/orders', orderRoutes);
 router.use('/coupons', couponRoutes);
 router.use('/payments', paymentRoutes);
 router.use('/banners', bannerRoutes);
+router.use('/valuable-customers', valuableCustomerRoutes);
 router.use('/analytics', analyticsRoutes);
 router.use('/upload', uploadRoutes);
 router.use('/search', searchRoutes);

@@ -19,3 +19,4 @@ export { default as Coupon, type ICoupon } from './Coupon.model.js';
 export { default as Banner, type IBanner } from './Banner.model.js';
 export { default as VendorProfile, type IVendorProfile } from './VendorProfile.model.js';
 export { default as CustomizeOrder, type ICustomizeOrder } from './CustomizeOrder.model.js';
+export { default as ValuableCustomer, type IValuableCustomer } from './ValuableCustomer.model.js';

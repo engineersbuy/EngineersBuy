@@ -41,6 +41,7 @@ import AdminAnalyticsPage from '@/pages/admin/AnalyticsPage'
 import AdminSettingsPage from '@/pages/admin/SettingsPage'
 import AdminVendorsPage from '@/pages/admin/VendorsAdminPage'
 import AdminReviewQueuePage from '@/pages/admin/ReviewQueuePage'
+import AdminValuableCustomersPage from '@/pages/admin/ValuableCustomersAdminPage'
 // Vendor
 import VendorDashboardPage from '@/pages/vendor/DashboardPage'
 import VendorProductsPage from '@/pages/vendor/ProductsPage'
@@ -108,6 +109,7 @@ export const router = createBrowserRouter([
       { path: 'users', element: <AdminUsersPage /> },
       { path: 'coupons', element: <AdminCouponsPage /> },
       { path: 'banners', element: <AdminBannersPage /> },
+      { path: 'valuable-customers', element: <AdminValuableCustomersPage /> },
       { path: 'analytics', element: <AdminAnalyticsPage /> },
       { path: 'settings', element: <AdminSettingsPage /> },
       { path: 'vendors', element: <AdminVendorsPage /> },

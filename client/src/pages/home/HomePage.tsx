@@ -4,6 +4,7 @@ import {
   CategoryShowcase,
   ProductSection,
   PopularBrands,
+  ValuableCustomersBanner,
   PromoBanners,
   WhyChooseUs,
   Newsletter,
@@ -53,7 +54,10 @@ export default function HomePage() {
       {/* 6. Popular Brands */}
       <PopularBrands />
 
-      {/* 7. New Arrivals */}
+      {/* 7. Valuable Customers Banner */}
+      <ValuableCustomersBanner />
+
+      {/* 8. New Arrivals */}
       <ProductSection
         title="New Arrivals"
         subtitle="The latest additions to our collection"

@@ -771,3 +771,32 @@ export interface VendorProductFormData {
   vendorNote?: string
   variants?: ProductVariant[]
 }
+
+// ─── Valuable Customers ────────────────────────────────────────────────────────
+
+export interface ValuableCustomer {
+  _id: string
+  name: string
+  logo: {
+    url: string
+    publicId?: string
+  }
+  website?: string
+  description?: string
+  position: number
+  isActive: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export interface ValuableCustomerFormData {
+  name: string
+  logo: {
+    url: string
+    publicId?: string
+  }
+  website?: string
+  description?: string
+  position?: number
+  isActive?: boolean
+}
