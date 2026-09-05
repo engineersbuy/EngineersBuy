@@ -123,11 +123,11 @@ export function ProductGridCard({
         {/* Rating */}
         {product.ratingsCount > 0 && (
           <div className="flex items-center gap-1.5">
-            <div className="flex items-center gap-0.5 rounded bg-success-50 dark:bg-success-950/50 px-1.5 py-0.5">
-              <span className="text-xs font-bold text-success-700 dark:text-success-400">
+            <div className="flex items-center gap-0.5 rounded bg-amber-500/10 dark:bg-amber-500/15 px-1.5 py-0.5">
+              <span className="text-xs font-bold text-amber-600 dark:text-amber-400">
                 {product.ratingsAverage.toFixed(1)}
               </span>
-              <Star className="h-3 w-3 fill-success-600 text-success-600 dark:fill-success-400 dark:text-success-400" />
+              <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
             </div>
             <span className="text-xs text-muted-foreground">({product.ratingsCount})</span>
           </div>
@@ -222,11 +222,11 @@ export function ProductListCard({
           {/* Rating */}
           {product.ratingsCount > 0 && (
             <div className="flex items-center gap-1.5 mt-2">
-              <div className="flex items-center gap-0.5 rounded bg-success-50 dark:bg-success-950/50 px-1.5 py-0.5">
-                <span className="text-xs font-bold text-success-700 dark:text-success-400">
+              <div className="flex items-center gap-0.5 rounded bg-amber-500/10 dark:bg-amber-500/15 px-1.5 py-0.5">
+                <span className="text-xs font-bold text-amber-600 dark:text-amber-400">
                   {product.ratingsAverage.toFixed(1)}
                 </span>
-                <Star className="h-3 w-3 fill-success-600 text-success-600 dark:fill-success-400 dark:text-success-400" />
+                <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
               </div>
               <span className="text-xs text-muted-foreground">
                 ({product.ratingsCount} reviews)
@@ -322,11 +322,11 @@ export function ProductQuickView({
         {/* Rating */}
         {product.ratingsCount > 0 && (
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 rounded-md bg-success-50 dark:bg-success-950/50 px-2 py-1">
-              <span className="text-sm font-bold text-success-700 dark:text-success-400">
+            <div className="flex items-center gap-1 rounded-md bg-amber-500/10 dark:bg-amber-500/15 px-2 py-1">
+              <span className="text-sm font-bold text-amber-600 dark:text-amber-400">
                 {product.ratingsAverage.toFixed(1)}
               </span>
-              <Star className="h-3.5 w-3.5 fill-success-600 text-success-600 dark:fill-success-400 dark:text-success-400" />
+              <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
             </div>
             <span className="text-sm text-muted-foreground">{product.ratingsCount} reviews</span>
           </div>

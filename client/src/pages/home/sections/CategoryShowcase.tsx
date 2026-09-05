@@ -47,32 +47,39 @@ export default function CategoryShowcase() {
           initial="initial"
           whileInView="animate"
           viewport={{ once: true, margin: '-50px' }}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-5"
         >
           {categories
             ? categories.map((cat) => (
                 <motion.div key={cat._id} variants={fadeInUp}>
                   <Link
                     to={`/category/${cat.slug}`}
-                    className="group glass flex flex-col items-center gap-3 rounded-2xl p-6 transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 hover:border-primary/25"
+                    className="group relative flex flex-col items-center gap-3.5 rounded-2xl border border-border/70 bg-card/80 p-5 sm:p-6 transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1.5 hover:border-primary/40 hover:bg-card overflow-hidden"
                   >
+                    <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-primary/0 to-transparent group-hover:via-primary/70 transition-all duration-500" />
                     {cat.image?.url ? (
-                      <div className="h-14 w-14 rounded-xl overflow-hidden bg-muted">
-                        <img src={cat.image.url} alt={cat.name} className="h-full w-full object-cover" />
+                      <div className="h-16 w-16 rounded-2xl overflow-hidden bg-muted p-1 border border-border/50 group-hover:border-primary/30 transition-colors">
+                        <img src={cat.image.url} alt={cat.name} className="h-full w-full object-cover rounded-xl transition-transform duration-300 group-hover:scale-105" />
                       </div>
                     ) : (
-                      <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
-                        <FlaskConical className="h-6 w-6" />
+                      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:shadow-md group-hover:shadow-primary/25 group-hover:scale-105">
+                        <FlaskConical className="h-7 w-7" />
                       </div>
                     )}
-                    <span className="text-sm font-medium text-foreground text-center line-clamp-1">
-                      {cat.name}
-                    </span>
-                    {cat.productCount !== undefined && (
-                      <span className="text-xs text-muted-foreground">
-                        {cat.productCount} products
+                    <div className="text-center">
+                      <span className="text-sm font-semibold text-foreground text-center line-clamp-1 group-hover:text-primary transition-colors">
+                        {cat.name}
                       </span>
-                    )}
+                      {cat.productCount !== undefined ? (
+                        <span className="text-xs text-muted-foreground mt-0.5 block">
+                          {cat.productCount} products
+                        </span>
+                      ) : (
+                        <span className="text-[11px] font-medium text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity mt-0.5 block">
+                          View Range →
+                        </span>
+                      )}
+                    </div>
                   </Link>
                 </motion.div>
               ))
@@ -82,14 +89,20 @@ export default function CategoryShowcase() {
                   <motion.div key={cat.slug} variants={fadeInUp}>
                     <Link
                       to={`/category/${cat.slug}`}
-                      className="group glass flex flex-col items-center gap-3 rounded-2xl p-6 transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 hover:border-primary/25"
+                      className="group relative flex flex-col items-center gap-3.5 rounded-2xl border border-border/70 bg-card/80 p-5 sm:p-6 transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1.5 hover:border-primary/40 hover:bg-card overflow-hidden"
                     >
-                      <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary transition-transform group-hover:scale-105">
-                        <Icon className="h-6 w-6" />
+                      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-primary/0 to-transparent group-hover:via-primary/70 transition-all duration-500" />
+                      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:shadow-md group-hover:shadow-primary/25 group-hover:scale-105">
+                        <Icon className="h-7 w-7" />
                       </div>
-                      <span className="text-sm font-medium text-foreground text-center">
-                        {cat.name}
-                      </span>
+                      <div className="text-center">
+                        <span className="text-sm font-semibold text-foreground text-center group-hover:text-primary transition-colors">
+                          {cat.name}
+                        </span>
+                        <span className="text-[11px] font-medium text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity mt-0.5 block">
+                          View Range →
+                        </span>
+                      </div>
                     </Link>
                   </motion.div>
                 )

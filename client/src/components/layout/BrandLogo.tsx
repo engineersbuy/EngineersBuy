@@ -18,7 +18,11 @@ export function BrandLogo({ size = 'md', className }: BrandLogoProps) {
     <img
       src="/logo.png"
       alt="Scientific Wala"
-      className={cn('shrink-0 object-contain rounded-full', sizeMap[size], className)}
+      className={cn(
+        'shrink-0 object-contain rounded-full shadow-sm border border-brand-700/15 dark:border-brand-400/20 transition-transform duration-300 group-hover:scale-105',
+        sizeMap[size],
+        className
+      )}
     />
   )
 }

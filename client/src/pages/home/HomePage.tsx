@@ -1,6 +1,7 @@
 import { useFeaturedProducts, useBestSellers, useNewArrivals } from '@/hooks/useHomeData'
 import {
   HeroBanner,
+  PrecisionTrustBar,
   CategoryShowcase,
   ProductSection,
   PopularBrands,
@@ -23,13 +24,16 @@ export default function HomePage() {
       {/* 1. Hero Banner Carousel */}
       <HeroBanner />
 
-      {/* 2. Category Showcase */}
+      {/* 2. Precision Guarantees Trust Bar */}
+      <PrecisionTrustBar />
+
+      {/* 3. Category Showcase */}
       <CategoryShowcase />
 
-      {/* 3. Featured Products */}
+      {/* 4. Featured Products */}
       <ProductSection
-        title="Featured Products"
-        subtitle="Handpicked lab equipment you'll love"
+        title="Featured Scientific Instruments"
+        subtitle="Precision apparatus and certified lab supplies for cutting-edge research"
         link="/shop?featured=true"
         linkText="See All Featured"
         products={featured.data}
@@ -37,13 +41,13 @@ export default function HomePage() {
         isError={featured.isError}
       />
 
-      {/* 4. Promotional Banners */}
+      {/* 5. Promotional & RFQ Banners */}
       <PromoBanners />
 
-      {/* 5. Best Sellers */}
+      {/* 6. Best Sellers */}
       <ProductSection
-        title="Best Sellers"
-        subtitle="Our most popular products this month"
+        title="Best Selling Lab Equipment"
+        subtitle="Top-ordered glassware, analytical balances, and testing kits this month"
         link="/shop?sort=-sold"
         linkText="View Best Sellers"
         products={bestSellers.data}
@@ -51,16 +55,16 @@ export default function HomePage() {
         isError={bestSellers.isError}
       />
 
-      {/* 6. Popular Brands */}
+      {/* 7. Authorized Brands */}
       <PopularBrands />
 
-      {/* 7. Valuable Customers Banner */}
+      {/* 8. Valuable Customers Banner */}
       <ValuableCustomersBanner />
 
-      {/* 8. New Arrivals */}
+      {/* 9. New Arrivals */}
       <ProductSection
-        title="New Arrivals"
-        subtitle="The latest additions to our collection"
+        title="New Laboratory Arrivals"
+        subtitle="Latest additions to our scientific instrumentation and reagent inventory"
         link="/shop?sort=-createdAt"
         linkText="View New Arrivals"
         products={newArrivals.data}

@@ -56,18 +56,19 @@ export function Navbar() {
   return (
     <>
       <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/80 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/70">
-        {/* Top accent line */}
-        <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+        {/* Top accent line with Royal Blue & Amber Gold */}
+        <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-primary via-amber-400 to-transparent opacity-85" />
 
         <div className="container flex h-16 items-center justify-between gap-4">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 shrink-0 group">
             <BrandLogo size="md" />
             <div className="hidden sm:flex flex-col">
-              <span className="text-lg font-bold font-heading text-foreground leading-tight tracking-tight">
+              <span className="text-lg font-bold font-heading text-foreground leading-tight tracking-tight group-hover:text-primary transition-colors">
                 {APP.NAME}
               </span>
-              <span className="text-[10px] font-medium text-primary/70 uppercase tracking-widest leading-none">
+              <span className="text-[10px] font-semibold text-amber-500 uppercase tracking-widest leading-none flex items-center gap-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-400 inline-block animate-pulse" />
                 {APP.TAGLINE}
               </span>
             </div>
@@ -88,10 +89,10 @@ export function Navbar() {
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-primary" />
               <input
                 type="search"
-                placeholder="Search instruments, chemicals..."
+                placeholder="Search instruments, chemicals, glassware..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-10 rounded-xl border border-border/60 bg-muted/30 pl-10 pr-4 text-sm outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary/40 focus:bg-background focus:ring-2 focus:ring-primary/15 focus:shadow-[0_0_0_4px_hsla(168,76%,36%,0.06)]"
+                className="w-full h-10 rounded-xl border border-border/60 bg-muted/30 pl-10 pr-4 text-sm outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary/50 focus:bg-background focus:ring-2 focus:ring-primary/20 focus:shadow-[0_0_0_4px_rgba(11,94,215,0.08)]"
               />
             </form>
           </div>
@@ -205,7 +206,7 @@ export function Navbar() {
             ) : (
               <button
                 onClick={() => openAuthModal('login')}
-                className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 px-5 py-2 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md hover:brightness-110 active:scale-[0.98]"
+                className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 via-primary to-indigo-700 px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:shadow-md hover:shadow-primary/25 hover:brightness-110 active:scale-[0.98]"
               >
                 Sign In
               </button>
@@ -290,7 +291,7 @@ export function Navbar() {
                         setMobileMenuOpen(false)
                         openAuthModal('login')
                       }}
-                      className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 px-4 py-2.5 text-sm font-medium text-white w-full shadow-sm"
+                      className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 via-primary to-indigo-700 px-4 py-2.5 text-sm font-semibold text-white w-full shadow-sm shadow-primary/20"
                     >
                       Sign In
                     </button>

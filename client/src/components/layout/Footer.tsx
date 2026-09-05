@@ -19,15 +19,20 @@ export function Footer() {
   return (
     <footer className="border-t border-border bg-muted/30">
       {/* Accent line */}
-      <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+      <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-primary via-amber-400 to-transparent opacity-70" />
       {/* Main Footer */}
       <div className="container py-12 lg:py-16">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand Column */}
           <div className="space-y-4">
-            <Link to="/" className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2.5 group">
               <BrandLogo size="md" />
-              <span className="text-xl font-bold font-heading">{APP.NAME}</span>
+              <div>
+                <span className="text-xl font-bold font-heading text-foreground block group-hover:text-primary transition-colors">{APP.NAME}</span>
+                <span className="text-[10px] font-semibold text-amber-500 uppercase tracking-widest leading-none block">
+                  {APP.TAGLINE}
+                </span>
+              </div>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
               {APP.DESCRIPTION}
@@ -44,11 +49,11 @@ export function Footer() {
           <div>
             <h3 className="text-sm font-semibold text-foreground mb-4">Quick Links</h3>
             <ul className="space-y-2.5">
-              <FooterLink href="/shop">All Products</FooterLink>
-              <FooterLink href="/categories">Categories</FooterLink>
-              <FooterLink href="/brands">Brands</FooterLink>
+              <FooterLink href="/shop">All Lab Products</FooterLink>
+              <FooterLink href="/categories">Lab Categories</FooterLink>
+              <FooterLink href="/brands">Authorized Brands</FooterLink>
               <FooterLink href="/deals">Deals & Offers</FooterLink>
-              <FooterLink href="/new-arrivals">New Arrivals</FooterLink>
+              <FooterLink href="/shop?tag=student">Student Lab Kits</FooterLink>
             </ul>
           </div>
 

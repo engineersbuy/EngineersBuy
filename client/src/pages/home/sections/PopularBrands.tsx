@@ -28,8 +28,8 @@ export default function PopularBrands() {
     <section className="py-16 lg:py-20 overflow-hidden">
       <div className="container">
         <SectionHeader
-          title="Popular Brands"
-          subtitle="Shop from top scientific brands"
+          title="Authorized Scientific Brands"
+          subtitle="Directly sourced from premier Indian and international laboratory manufacturers"
           link="/brands"
           linkText="All Brands"
         />
@@ -44,9 +44,9 @@ export default function PopularBrands() {
               to={`/brand/${brand.slug}`}
               className="shrink-0 mx-2 group"
             >
-              <div className="flex items-center gap-2 rounded-xl border border-border/50 bg-card/80 backdrop-blur-sm px-6 py-3 transition-all duration-300 hover:border-primary/30 hover:shadow-glow hover:-translate-y-0.5">
-                <span className="h-2 w-2 rounded-full bg-primary/40 group-hover:bg-primary transition-colors" />
-                <span className="text-sm font-medium text-foreground whitespace-nowrap">
+              <div className="flex items-center gap-2.5 rounded-xl border border-border/60 bg-card/85 backdrop-blur-sm px-6 py-3 transition-all duration-300 hover:border-primary/40 hover:shadow-card-hover hover:-translate-y-0.5">
+                <span className="h-2 w-2 rounded-full bg-amber-400/80 group-hover:bg-amber-400 group-hover:scale-125 transition-all shadow-sm" />
+                <span className="text-sm font-semibold text-foreground whitespace-nowrap group-hover:text-primary transition-colors">
                   {brand.name}
                 </span>
               </div>
@@ -64,9 +64,9 @@ export default function PopularBrands() {
               to={`/brand/${brand.slug}`}
               className="shrink-0 mx-2 group"
             >
-              <div className="flex items-center gap-2 rounded-xl border border-border/50 bg-card/80 backdrop-blur-sm px-6 py-3 transition-all duration-300 hover:border-primary/30 hover:shadow-glow hover:-translate-y-0.5">
-                <span className="h-2 w-2 rounded-full bg-primary/40 group-hover:bg-primary transition-colors" />
-                <span className="text-sm font-medium text-foreground whitespace-nowrap">
+              <div className="flex items-center gap-2.5 rounded-xl border border-border/60 bg-card/85 backdrop-blur-sm px-6 py-3 transition-all duration-300 hover:border-primary/40 hover:shadow-card-hover hover:-translate-y-0.5">
+                <span className="h-2 w-2 rounded-full bg-amber-400/80 group-hover:bg-amber-400 group-hover:scale-125 transition-all shadow-sm" />
+                <span className="text-sm font-semibold text-foreground whitespace-nowrap group-hover:text-primary transition-colors">
                   {brand.name}
                 </span>
               </div>

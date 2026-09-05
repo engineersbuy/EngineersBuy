@@ -14,8 +14,9 @@ export function SectionHeader({ title, subtitle, link, linkText = 'View All' }: 
   return (
     <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
       <div>
-        <div className="flex items-center gap-3 mb-2">
-          <div className="h-1 w-8 rounded-full bg-gradient-to-r from-primary to-emerald-500" />
+        <div className="flex items-center gap-2 mb-2">
+          <div className="h-1 w-8 rounded-full bg-gradient-to-r from-primary to-amber-400" />
+          <div className="h-1 w-2 rounded-full bg-amber-400" />
         </div>
         <h2 className="text-display-xs sm:text-display-sm font-heading text-foreground">
           {title}

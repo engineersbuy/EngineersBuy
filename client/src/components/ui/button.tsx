@@ -29,7 +29,9 @@ const buttonVariants = cva(
         warning:
           'bg-warning-500 text-white shadow-sm hover:bg-warning-600 hover:shadow-md',
         gradient:
-          'bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-sm hover:shadow-md hover:brightness-110',
+          'bg-gradient-to-r from-blue-600 via-brand-600 to-indigo-700 text-white shadow-sm hover:shadow-md hover:shadow-primary/25 hover:brightness-105',
+        gold:
+          'bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 font-semibold shadow-sm hover:shadow-md hover:shadow-amber-500/25 hover:brightness-105',
         'gradient-outline':
           'relative border border-input bg-background p-[1px] rounded-lg hover:border-primary/40 [&>span]:bg-background [&>span]:rounded-[calc(0.625rem-1px)] [&>span]:px-4 [&>span]:py-2 [&>span]:inline-flex [&>span]:items-center [&>span]:gap-2 [&>span]:text-foreground [&>span]:transition-colors',
         'soft-primary':
