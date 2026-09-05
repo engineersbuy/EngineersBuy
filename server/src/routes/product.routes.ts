@@ -17,7 +17,13 @@ import {
   paginationQuerySchema,
 } from '../validators/index.js';
 import { z } from 'zod';
+import multer from 'multer';
 import reviewRoutes from './review.routes.js';
+
+const uploadSpreadsheet = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+});
 
 const router = Router();
 
@@ -136,6 +142,24 @@ router.use(authenticate, authorize('admin'));
  *         description: Admin catalog fetched successfully
  */
 router.get('/admin/all', validate({ query: paginationQuerySchema }), ProductController.getAdminProducts);
+
+/**
+ * @openapi
+ * /products/admin/bulk-import/preview:
+ *   post:
+ *     summary: Parse and preview Excel/CSV spreadsheet for bulk product import (Admin only)
+ *     tags: [Products]
+ */
+router.post('/admin/bulk-import/preview', uploadSpreadsheet.single('file'), ProductController.previewBulkImport);
+
+/**
+ * @openapi
+ * /products/admin/bulk-import/execute:
+ *   post:
+ *     summary: Execute validated bulk product import into MongoDB (Admin only)
+ *     tags: [Products]
+ */
+router.post('/admin/bulk-import/execute', ProductController.executeBulkImport);
 
 /**
  * @openapi

@@ -64,20 +64,20 @@ export default function HeroBanner() {
 
   // Auto-play
   useEffect(() => {
-    const timer = setInterval(next, 6000)
+    const timer = setInterval(next, 5000)
     return () => clearInterval(timer)
   }, [next])
 
   return (
     <section className="relative w-full overflow-hidden bg-slate-950">
       <div className="relative h-[480px] sm:h-[520px] lg:h-[580px]">
-        <AnimatePresence mode="wait">
+        <AnimatePresence initial={false}>
           <motion.div
             key={current}
-            initial={{ opacity: 0, scale: 1.03 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: 'easeInOut' }}
             className="absolute inset-0"
           >
             {slides ? (
@@ -96,36 +96,22 @@ export default function HeroBanner() {
                         <Sparkles className="h-3.5 w-3.5 text-amber-400" />
                         Scientific Wala • Innovation with Precision
                       </div>
-                      <motion.h2
-                        initial={{ y: 25, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.2, duration: 0.5 }}
-                        className="text-display-md sm:text-display-lg lg:text-display-xl font-heading text-white tracking-tight"
-                      >
+                      <h2 className="text-display-md sm:text-display-lg lg:text-display-xl font-heading text-white tracking-tight">
                         {slides[current].title}
-                      </motion.h2>
+                      </h2>
                       {slides[current].subtitle && (
-                        <motion.p
-                          initial={{ y: 20, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          transition={{ delay: 0.35, duration: 0.5 }}
-                          className="text-body-md sm:text-body-lg text-slate-200/90 max-w-xl leading-relaxed"
-                        >
+                        <p className="text-body-md sm:text-body-lg text-slate-200/90 max-w-xl leading-relaxed">
                           {slides[current].subtitle}
-                        </motion.p>
+                        </p>
                       )}
-                      <motion.div
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.5, duration: 0.5 }}
-                      >
+                      <div>
                         <Button asChild size="xl" variant="gradient" className="group shadow-lg shadow-blue-500/25">
                           <Link to={slides[current].link || '/shop'}>
                             Shop Now
                             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                           </Link>
                         </Button>
-                      </motion.div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -171,41 +157,29 @@ export default function HeroBanner() {
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                       <div className="lg:col-span-8 max-w-2xl space-y-6">
                         {/* Eyebrow Badge */}
-                        <motion.div
-                          initial={{ y: 20, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          transition={{ delay: 0.1, duration: 0.5 }}
+                        <div
                           className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold backdrop-blur-md border ${fallbackBanners[current].badgeColor}`}
                         >
                           <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
                           {fallbackBanners[current].badge}
-                        </motion.div>
+                        </div>
 
                         {/* Title */}
-                        <motion.h1
-                          initial={{ y: 25, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          transition={{ delay: 0.2, duration: 0.5 }}
+                        <h1
                           className="text-display-sm sm:text-display-lg lg:text-display-xl font-heading text-white tracking-tight leading-[1.12]"
                         >
                           {fallbackBanners[current].title}
-                        </motion.h1>
+                        </h1>
 
                         {/* Subtitle */}
-                        <motion.p
-                          initial={{ y: 20, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          transition={{ delay: 0.35, duration: 0.5 }}
+                        <p
                           className="text-body-md sm:text-body-lg text-slate-300 max-w-xl leading-relaxed"
                         >
                           {fallbackBanners[current].subtitle}
-                        </motion.p>
+                        </p>
 
                         {/* Action Buttons */}
-                        <motion.div
-                          initial={{ y: 20, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          transition={{ delay: 0.5, duration: 0.5 }}
+                        <div
                           className="flex flex-wrap gap-3.5 pt-2"
                         >
                           <Button
@@ -228,15 +202,12 @@ export default function HeroBanner() {
                               {fallbackBanners[current].secondaryText}
                             </Link>
                           </Button>
-                        </motion.div>
+                        </div>
                       </div>
 
                       {/* Right Metric Pill on Large Screens */}
                       <div className="hidden lg:flex lg:col-span-4 justify-end">
-                        <motion.div
-                          initial={{ opacity: 0, y: 30 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.4, duration: 0.6 }}
+                        <div
                           className="rounded-3xl border border-white/15 bg-white/[0.08] backdrop-blur-xl p-6 text-white max-w-xs shadow-2xl space-y-4"
                         >
                           <div className="flex items-center gap-3">
@@ -263,7 +234,7 @@ export default function HeroBanner() {
                               <span>Institutional & Academic GST Invoicing</span>
                             </div>
                           </div>
-                        </motion.div>
+                        </div>
                       </div>
                     </div>
                   </div>

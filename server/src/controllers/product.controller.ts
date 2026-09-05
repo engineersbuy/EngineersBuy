@@ -5,8 +5,8 @@
 // Supports pagination metadata formatting.
 // ============================================================================
 
-import { Request, Response } from 'express';
-import { ProductService } from '../services/index.js';
+import type { Request, Response } from 'express';
+import { ProductService, BulkImportService } from '../services/index.js';
 import { ApiResponse, asyncHandler } from '../utils/index.js';
 
 export const getProducts = asyncHandler(async (req: Request, res: Response) => {
@@ -65,3 +65,15 @@ export const getSearchSuggestions = asyncHandler(async (req: Request, res: Respo
   const suggestions = await ProductService.getSearchSuggestions(req.query.q as string, limit);
   res.status(200).json(new ApiResponse(200, suggestions, 'Search suggestions generated.'));
 });
+
+export const previewBulkImport = asyncHandler(async (req: Request, res: Response) => {
+  const result = await BulkImportService.previewImport(req.file?.buffer);
+  res.status(200).json(new ApiResponse(200, result, 'Spreadsheet preview generated successfully.'));
+});
+
+export const executeBulkImport = asyncHandler(async (req: Request, res: Response) => {
+  const { items } = req.body;
+  const result = await BulkImportService.executeImport(items);
+  res.status(200).json(new ApiResponse(200, result, `Successfully imported ${result.totalExecuted} items.`));
+});
+

@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Link, useNavigate } from 'react-router'
+import { Link, useNavigate, useSearchParams } from 'react-router'
 import toast from 'react-hot-toast'
-import { Plus, Search, Pencil, Trash2 } from 'lucide-react'
+import { Plus, Search, Pencil, Trash2, FileSpreadsheet } from 'lucide-react'
 import { productApi } from '@/services'
 import {
   AdminPageHeader,
   TablePagination,
+  BulkImportModal,
 } from '@/components/admin'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -28,10 +29,29 @@ function categoryName(category: Product['category']): string {
 export default function ProductsAdminPage() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [page, setPage] = useState(1)
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null)
+  const [isBulkImportOpen, setIsBulkImportOpen] = useState(
+    searchParams.get('action') === 'bulk-import'
+  )
+
+  useEffect(() => {
+    if (searchParams.get('action') === 'bulk-import') {
+      setIsBulkImportOpen(true)
+    }
+  }, [searchParams])
+
+  const handleCloseBulkImport = () => {
+    setIsBulkImportOpen(false)
+    if (searchParams.get('action') === 'bulk-import') {
+      const nextParams = new URLSearchParams(searchParams)
+      nextParams.delete('action')
+      setSearchParams(nextParams, { replace: true })
+    }
+  }
 
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['admin', 'products', { page, search }],
@@ -72,9 +92,18 @@ export default function ProductsAdminPage() {
         title="Products"
         description="Manage your product catalog"
         action={
-          <Button asChild leftIcon={<Plus />}>
-            <Link to="/admin/products/new">Add Product</Link>
-          </Button>
+          <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              onClick={() => setIsBulkImportOpen(true)}
+              leftIcon={<FileSpreadsheet className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />}
+            >
+              Bulk Import
+            </Button>
+            <Button asChild leftIcon={<Plus />}>
+              <Link to="/admin/products/new">Add Product</Link>
+            </Button>
+          </div>
         }
       />
 
@@ -245,6 +274,9 @@ export default function ProductsAdminPage() {
           </div>
         </div>
       )}
+
+      {/* Bulk Import Modal */}
+      <BulkImportModal isOpen={isBulkImportOpen} onClose={handleCloseBulkImport} />
     </div>
   )
 }

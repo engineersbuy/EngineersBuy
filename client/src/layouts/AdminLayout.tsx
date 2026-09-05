@@ -27,20 +27,62 @@ import { ScrollToTop } from '@/components/layout/ScrollToTop'
 
 // ─── Admin Layout ───────────────────────────────────────────────────────────────
 
-const sidebarLinks = [
-  { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-  { label: 'Products', href: '/admin/products', icon: Package },
-  { label: 'Categories', href: '/admin/categories', icon: Tags },
-  { label: 'Brands', href: '/admin/brands', icon: Building2 },
-  { label: 'Orders', href: '/admin/orders', icon: ShoppingBag },
-  { label: 'Users', href: '/admin/users', icon: Users },
-  { label: 'Vendors', href: '/admin/vendors', icon: Store },
-  { label: 'Review Queue', href: '/admin/review-queue', icon: ClipboardCheck },
-  { label: 'Coupons', href: '/admin/coupons', icon: Ticket },
-  { label: 'Banners', href: '/admin/banners', icon: Image },
-  { label: 'Valuable Customers', href: '/admin/valuable-customers', icon: Award },
-  { label: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
-  { label: 'Settings', href: '/admin/settings', icon: Settings },
+import { FileSpreadsheet } from 'lucide-react'
+
+// ─── Admin Layout Groups ────────────────────────────────────────────────────────
+
+interface NavItem {
+  label: string
+  href: string
+  icon: React.ElementType
+  badge?: string
+}
+
+interface NavGroup {
+  title: string
+  items: NavItem[]
+}
+
+const sidebarGroups: NavGroup[] = [
+  {
+    title: 'Overview',
+    items: [
+      { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+      { label: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
+    ],
+  },
+  {
+    title: 'Inventory & Catalog',
+    items: [
+      { label: 'Products', href: '/admin/products', icon: Package },
+      { label: 'Categories', href: '/admin/categories', icon: Tags },
+      { label: 'Brands', href: '/admin/brands', icon: Building2 },
+      { label: 'Bulk Import', href: '/admin/products?action=bulk-import', icon: FileSpreadsheet, badge: 'New' },
+    ],
+  },
+  {
+    title: 'Orders & Commerce',
+    items: [
+      { label: 'Orders', href: '/admin/orders', icon: ShoppingBag },
+      { label: 'Review Queue', href: '/admin/review-queue', icon: ClipboardCheck },
+      { label: 'Coupons', href: '/admin/coupons', icon: Ticket },
+    ],
+  },
+  {
+    title: 'Store & Content',
+    items: [
+      { label: 'Banners', href: '/admin/banners', icon: Image },
+      { label: 'Valuable Customers', href: '/admin/valuable-customers', icon: Award },
+      { label: 'Vendors', href: '/admin/vendors', icon: Store },
+      { label: 'Users', href: '/admin/users', icon: Users },
+    ],
+  },
+  {
+    title: 'System',
+    items: [
+      { label: 'Settings', href: '/admin/settings', icon: Settings },
+    ],
+  },
 ]
 
 export function AdminLayout() {
@@ -51,7 +93,8 @@ export function AdminLayout() {
 
   const isActive = (href: string) => {
     if (href === '/admin') return location.pathname === '/admin'
-    return location.pathname.startsWith(href)
+    const cleanHref = href.split('?')[0]
+    return location.pathname === cleanHref || location.pathname.startsWith(`${cleanHref}/`)
   }
 
   return (
@@ -68,50 +111,88 @@ export function AdminLayout() {
       {/* Sidebar */}
       <aside
         className={cn(
-          'fixed lg:static inset-y-0 left-0 z-50 flex flex-col border-r border-border bg-sidebar transition-all duration-300',
-          collapsed ? 'w-[68px]' : 'w-64',
+          'fixed lg:static inset-y-0 left-0 z-50 flex flex-col border-r border-border bg-sidebar transition-all duration-300 shadow-sm',
+          collapsed ? 'w-[70px]' : 'w-64',
           mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
         {/* Sidebar Header */}
         <div className="flex h-16 items-center justify-between border-b border-border px-4">
-          {!collapsed && (
-            <Link to="/admin" className="flex items-center gap-2">
+          {!collapsed ? (
+            <Link to="/admin" className="flex items-center gap-2.5 group">
               <BrandLogo size="sm" />
-              <span className="text-sm font-bold font-heading">{APP.NAME}</span>
+              <div>
+                <span className="text-sm font-bold font-heading text-foreground block leading-tight group-hover:text-primary transition-colors">
+                  {APP.NAME}
+                </span>
+                <span className="text-[9px] font-semibold text-amber-500 uppercase tracking-wider block">
+                  Admin Console
+                </span>
+              </div>
+            </Link>
+          ) : (
+            <Link to="/admin" className="mx-auto block">
+              <BrandLogo size="sm" />
             </Link>
           )}
           <button
             onClick={() => isMobile ? setMobileOpen(false) : setCollapsed(!collapsed)}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-colors shrink-0"
+            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
           </button>
         </div>
 
-        {/* Sidebar Links */}
-        <nav className="flex-1 overflow-y-auto p-2 space-y-0.5">
-          {sidebarLinks.map((link) => {
-            const Icon = link.icon
-            const active = isActive(link.href)
+        {/* Sidebar Categorized Links */}
+        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5 scrollbar-thin">
+          {sidebarGroups.map((group, groupIdx) => (
+            <div key={group.title} className="space-y-1">
+              {!collapsed ? (
+                <div className="px-3 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70">
+                  {group.title}
+                </div>
+              ) : groupIdx !== 0 ? (
+                <div className="my-2 border-t border-border/60 mx-1" />
+              ) : null}
 
-            return (
-              <Link
-                key={link.href}
-                to={link.href}
-                onClick={() => isMobile && setMobileOpen(false)}
-                className={cn(
-                  'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all',
-                  active
-                    ? 'bg-primary/10 text-primary border border-primary/20'
-                    : 'text-muted-foreground hover:bg-accent hover:text-foreground'
-                )}
-              >
-                <Icon className="h-4 w-4 shrink-0" />
-                {!collapsed && <span>{link.label}</span>}
-              </Link>
-            )
-          })}
+              <div className="space-y-0.5">
+                {group.items.map((link) => {
+                  const Icon = link.icon
+                  const active = isActive(link.href)
+
+                  return (
+                    <Link
+                      key={link.label}
+                      to={link.href}
+                      onClick={() => isMobile && setMobileOpen(false)}
+                      title={collapsed ? link.label : undefined}
+                      className={cn(
+                        'group relative flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200',
+                        active
+                          ? 'bg-primary/10 text-primary font-semibold shadow-xs'
+                          : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground',
+                        collapsed && 'justify-center px-2'
+                      )}
+                    >
+                      {active && (
+                        <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 rounded-r-full bg-primary" />
+                      )}
+                      <Icon className={cn('h-4 w-4 shrink-0 transition-transform group-hover:scale-110', active && 'text-primary')} />
+                      {!collapsed && (
+                        <span className="flex-1 truncate">{link.label}</span>
+                      )}
+                      {!collapsed && link.badge && (
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-amber-400/20 text-amber-600 dark:text-amber-400 border border-amber-400/30 leading-none">
+                          {link.badge}
+                        </span>
+                      )}
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
         </nav>
 
         {/* Back to Store */}

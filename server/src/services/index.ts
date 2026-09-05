@@ -23,4 +23,5 @@ export { InvoiceService } from './invoice.service.js';
 export { UploadService } from './upload.service.js';
 export { VendorService } from './vendor.service.js';
 export { ValuableCustomerService } from './valuableCustomer.service.js';
+export { BulkImportService } from './bulkImport.service.js';
 export * as NodemailerService from './nodemailer.service.js';

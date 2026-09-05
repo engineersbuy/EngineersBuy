@@ -40,6 +40,8 @@ const API_ROUTES = {
     RELATED: (id: string) => `/products/${id}/related`,
     ADMIN_ALL: '/products/admin/all',
     BY_ID: (id: string) => `/products/${id}`,
+    BULK_PREVIEW: '/products/admin/bulk-import/preview',
+    BULK_EXECUTE: '/products/admin/bulk-import/execute',
   },
 
   // Categories

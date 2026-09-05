@@ -1,6 +1,15 @@
 import apiClient from '@/api/apiClient'
 import API_ROUTES from '@/constants/apiRoutes'
-import type { ApiResponse, PaginatedResponse, Product, ProductFilters, ProductFormData } from '@/types'
+import type {
+  ApiResponse,
+  BulkImportExecuteResult,
+  BulkImportPreviewResult,
+  BulkPreviewItem,
+  PaginatedResponse,
+  Product,
+  ProductFilters,
+  ProductFormData,
+} from '@/types'
 
 // ─── Product API Service ────────────────────────────────────────────────────────
 
@@ -35,6 +44,17 @@ const productApi = {
 
   remove: (id: string) =>
     apiClient.delete<ApiResponse<null>>(API_ROUTES.PRODUCTS.BY_ID(id)),
+
+  previewBulkImport: (file: File) => {
+    const formData = new FormData()
+    formData.append('file', file)
+    return apiClient.post<ApiResponse<BulkImportPreviewResult>>(API_ROUTES.PRODUCTS.BULK_PREVIEW, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+  },
+
+  executeBulkImport: (items: BulkPreviewItem[]) =>
+    apiClient.post<ApiResponse<BulkImportExecuteResult>>(API_ROUTES.PRODUCTS.BULK_EXECUTE, { items }),
 }
 
 export default productApi

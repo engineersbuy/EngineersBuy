@@ -800,3 +800,38 @@ export interface ValuableCustomerFormData {
   position?: number
   isActive?: boolean
 }
+
+// ─── Bulk Product Import ───────────────────────────────────────────────────────
+
+export interface BulkPreviewItem {
+  rowNumber: number
+  action: 'create' | 'update' | 'error'
+  sku: string
+  name: string
+  categoryName?: string
+  brandName?: string
+  price: number
+  salePrice?: number
+  stock: number
+  isActive: boolean
+  productType?: 'standalone' | 'family'
+  description?: string
+  specificationsCount?: number
+  changes?: string[]
+  errors?: string[]
+}
+
+export interface BulkImportPreviewResult {
+  totalRows: number
+  validCount: number
+  newProductsCount: number
+  updatedProductsCount: number
+  errorCount: number
+  items: BulkPreviewItem[]
+}
+
+export interface BulkImportExecuteResult {
+  createdCount: number
+  updatedCount: number
+  totalExecuted: number
+}
