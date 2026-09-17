@@ -8,8 +8,9 @@
 import { Request, Response } from 'express';
 import { AuthService } from '../services/index.js';
 import { ApiResponse, asyncHandler, ApiError } from '../utils/index.js';
-import { getRefreshTokenCookieOptions } from '../utils/generateTokens.js';
+import { getRefreshTokenCookieOptions, decodeAccessToken } from '../utils/generateTokens.js';
 import { AUTH_CONSTANTS } from '../interfaces/auth.interface.js';
+import { env } from '../config/env.js';
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const user = await AuthService.register(req.body);
@@ -34,30 +35,35 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 
   const { user, accessToken, refreshToken } = await AuthService.login(req.body, ipCtx);
 
-  // Set the refresh token as a secure httpOnly cookie
+  // Set the refresh token as a secure httpOnly cookie with role-based maxAge
   res.cookie(
     AUTH_CONSTANTS.REFRESH_TOKEN_COOKIE,
     refreshToken,
-    getRefreshTokenCookieOptions()
+    getRefreshTokenCookieOptions(user.role)
   );
 
+  // Return both accessToken and refreshToken in body for cross-origin resilience
   res.status(200).json(
-    new ApiResponse(200, { user, accessToken }, 'Login successful.')
+    new ApiResponse(200, { user, accessToken, refreshToken }, 'Login successful.')
   );
 });
 
 export const logout = asyncHandler(async (req: Request, res: Response) => {
-  const rawRefreshToken = req.cookies[AUTH_CONSTANTS.REFRESH_TOKEN_COOKIE];
+  const rawRefreshToken = req.cookies[AUTH_CONSTANTS.REFRESH_TOKEN_COOKIE]
+    || req.body?.refreshToken
+    || (req.headers['x-refresh-token'] as string);
   const userId = req.user?._id;
 
   if (rawRefreshToken && userId) {
     await AuthService.logout(rawRefreshToken, userId);
   }
 
-  // Clear cookie
+  // Clear cookie with identical path and cross-origin settings
   res.clearCookie(AUTH_CONSTANTS.REFRESH_TOKEN_COOKIE, {
     httpOnly: true,
-    path: '/api/v1/auth',
+    secure: env.IS_PRODUCTION,
+    sameSite: env.IS_PRODUCTION ? 'none' : 'lax',
+    path: '/',
   });
 
   res.status(200).json(new ApiResponse(200, null, 'Logged out successfully.'));
@@ -65,7 +71,9 @@ export const logout = asyncHandler(async (req: Request, res: Response) => {
 
 export const refreshToken = asyncHandler(async (req: Request, res: Response) => {
   const expiredAccessToken = req.headers.authorization?.split(' ')[1] || req.cookies.accessToken;
-  const rawRefreshToken = req.cookies[AUTH_CONSTANTS.REFRESH_TOKEN_COOKIE];
+  const rawRefreshToken = req.cookies[AUTH_CONSTANTS.REFRESH_TOKEN_COOKIE]
+    || req.body?.refreshToken
+    || (req.headers['x-refresh-token'] as string);
 
   if (!expiredAccessToken) {
     throw ApiError.unauthorized('Access token is missing.');
@@ -82,15 +90,18 @@ export const refreshToken = asyncHandler(async (req: Request, res: Response) => 
 
   const tokens = await AuthService.rotateTokens(expiredAccessToken, rawRefreshToken, ipCtx);
 
-  // Set the new refresh token cookie
+  const decoded = decodeAccessToken(tokens.accessToken);
+  const role = decoded?.role;
+
+  // Set the new refresh token cookie with role-based maxAge
   res.cookie(
     AUTH_CONSTANTS.REFRESH_TOKEN_COOKIE,
     tokens.refreshToken,
-    getRefreshTokenCookieOptions()
+    getRefreshTokenCookieOptions(role)
   );
 
   res.status(200).json(
-    new ApiResponse(200, { accessToken: tokens.accessToken }, 'Token refreshed successfully.')
+    new ApiResponse(200, { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken }, 'Token refreshed successfully.')
   );
 });
 

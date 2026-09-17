@@ -24,9 +24,18 @@ export function useInitAuth() {
   const setLoading = useAuthStore((s) => s.setLoading)
   const setInitialized = useAuthStore((s) => s.setInitialized)
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
+  const checkInactivity = useAuthStore((s) => s.checkInactivity)
+  const recordActivity = useAuthStore((s) => s.recordActivity)
 
   useEffect(() => {
     let active = true
+
+    // Check if the user (non-admin) has been inactive for more than a week
+    if (checkInactivity()) {
+      setLoading(false)
+      setInitialized(true)
+      return
+    }
 
     async function bootstrap() {
       // No persisted session and no token → nothing to restore.
@@ -40,6 +49,7 @@ export function useInitAuth() {
         const res = await authApi.getMe()
         if (active) {
           setUser(res.data.data)
+          recordActivity()
           setLoading(false)
           setInitialized(true)
         }
@@ -51,8 +61,29 @@ export function useInitAuth() {
     }
 
     void bootstrap()
+
+    // Activity tracking: Listen for user interaction events to record activity
+    const handleActivity = () => {
+      recordActivity()
+    }
+
+    window.addEventListener('pointerdown', handleActivity, { passive: true })
+    window.addEventListener('keydown', handleActivity, { passive: true })
+    window.addEventListener('scroll', handleActivity, { passive: true })
+    window.addEventListener('touchstart', handleActivity, { passive: true })
+
+    // Periodic check every 5 minutes (for tabs left open with no interaction for > 1 week)
+    const interval = setInterval(() => {
+      checkInactivity()
+    }, 5 * 60 * 1000)
+
     return () => {
       active = false
+      window.removeEventListener('pointerdown', handleActivity)
+      window.removeEventListener('keydown', handleActivity)
+      window.removeEventListener('scroll', handleActivity)
+      window.removeEventListener('touchstart', handleActivity)
+      clearInterval(interval)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -68,8 +99,8 @@ export function useLogin(options?: { onSuccess?: () => void }) {
   return useMutation({
     mutationFn: authApi.login,
     onSuccess: (res) => {
-      const { user, accessToken } = res.data.data
-      login(user, accessToken)
+      const { user, accessToken, refreshToken } = res.data.data
+      login(user, accessToken, refreshToken)
       toast.success(`Welcome back, ${user.firstName}!`)
 
       if (options?.onSuccess) {

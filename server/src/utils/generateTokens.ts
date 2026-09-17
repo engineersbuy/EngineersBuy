@@ -63,8 +63,12 @@ export function generateAccessToken(user: IUser): string {
     role: user.role,
   };
 
+  // Admin session is permanent/long-lived (365d) unless manually logged out.
+  // Regular users have a 7d session, expiring only after 1 week of inactivity or manual logout.
+  const expiresIn = user.role === 'admin' ? '365d' : '7d';
+
   const options: SignOptions = {
-    expiresIn: env.JWT_ACCESS_EXPIRY as any,
+    expiresIn: expiresIn as any,
     issuer: 'electrokart',
     subject: user._id.toString(),
   };
@@ -91,8 +95,9 @@ export async function generateRefreshToken(user: IUser, req: Request): Promise<s
   // Hash the token before storing in database
   const hashedToken = await bcrypt.hash(rawToken, 10);
 
-  // Calculate expiry date (parse the env variable like "7d")
-  const expiresAt = calculateExpiry(env.JWT_REFRESH_EXPIRY);
+  // Admin refresh token: 365d; Regular user: 7d
+  const expiryDuration = user.role === 'admin' ? '365d' : '7d';
+  const expiresAt = calculateExpiry(expiryDuration);
 
   // Store hashed token in database
   await Token.create({
@@ -188,19 +193,20 @@ export async function revokeAllUserTokens(userId: string): Promise<void> {
 /**
  * Returns cookie options for setting the refresh token as an httpOnly cookie.
  */
-export function getRefreshTokenCookieOptions(): {
+export function getRefreshTokenCookieOptions(role?: string): {
   httpOnly: boolean;
   secure: boolean;
   sameSite: 'strict' | 'lax' | 'none';
   maxAge: number;
   path: string;
 } {
+  const expiryDuration = role === 'admin' ? '365d' : '7d';
   return {
     httpOnly: true,                          // Not accessible via JavaScript
     secure: env.IS_PRODUCTION,               // HTTPS only in production
-    sameSite: env.IS_PRODUCTION ? 'strict' : 'lax',
-    maxAge: parseDurationToMs(env.JWT_REFRESH_EXPIRY), // Match token expiry
-    path: '/api/v1/auth',                    // Only sent to auth endpoints
+    sameSite: env.IS_PRODUCTION ? 'none' : 'lax', // 'none' allows cross-domain cookies (scientificwala.com <-> onrender.com)
+    maxAge: parseDurationToMs(expiryDuration), // 365d for admin, 7d for regular users
+    path: '/',                               // Scoped across all auth endpoints
   };
 }
 

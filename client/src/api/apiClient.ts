@@ -17,18 +17,24 @@ const apiClient = axios.create({
   withCredentials: true,
 })
 
-// ─── Access Token Storage ───────────────────────────────────────────────────────
+// ─── Access & Refresh Token Storage ──────────────────────────────────────────────
 
 const ACCESS_TOKEN_KEY = 'scientificwala_access_token'
+const REFRESH_TOKEN_KEY = 'scientificwala_refresh_token'
 
 const getAccessToken = (): string | null => localStorage.getItem(ACCESS_TOKEN_KEY)
+const getRefreshToken = (): string | null => localStorage.getItem(REFRESH_TOKEN_KEY)
 
-const setAccessToken = (token: string): void => {
+const setAccessToken = (token: string, refreshToken?: string): void => {
   localStorage.setItem(ACCESS_TOKEN_KEY, token)
+  if (refreshToken) {
+    localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken)
+  }
 }
 
 const clearTokens = (): void => {
   localStorage.removeItem(ACCESS_TOKEN_KEY)
+  localStorage.removeItem(REFRESH_TOKEN_KEY)
 }
 
 // ─── Refresh Queue ──────────────────────────────────────────────────────────────
@@ -95,19 +101,24 @@ apiClient.interceptors.response.use(
       isRefreshing = true
 
       try {
-        // The refresh token lives in an httpOnly cookie; the (possibly expired)
-        // access token is sent via the Authorization header by a bare axios call.
-        const { data } = await axios.post<ApiResponse<{ accessToken: string }>>(
+        const storedRefreshToken = getRefreshToken()
+        // The refresh token lives in an httpOnly cookie and is also sent in body/header
+        // to guarantee cross-domain reliability between scientificwala.com and onrender.com
+        const { data } = await axios.post<ApiResponse<{ accessToken: string; refreshToken?: string }>>(
           `${env.API_BASE_URL}${API_ROUTES.AUTH.REFRESH}`,
-          {},
+          { refreshToken: storedRefreshToken },
           {
             withCredentials: true,
-            headers: { Authorization: `Bearer ${getAccessToken()}` },
+            headers: {
+              Authorization: `Bearer ${getAccessToken()}`,
+              ...(storedRefreshToken ? { 'x-refresh-token': storedRefreshToken } : {}),
+            },
           }
         )
 
         const newAccessToken = data.data.accessToken
-        setAccessToken(newAccessToken)
+        const newRefreshToken = data.data.refreshToken
+        setAccessToken(newAccessToken, newRefreshToken)
         processQueue(null, newAccessToken)
 
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
@@ -130,5 +141,5 @@ apiClient.interceptors.response.use(
   }
 )
 
-export { apiClient, getAccessToken, setAccessToken, clearTokens }
+export { apiClient, getAccessToken, getRefreshToken, setAccessToken, clearTokens }
 export default apiClient

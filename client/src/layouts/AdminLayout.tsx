@@ -18,16 +18,16 @@ import {
   Store,
   ClipboardCheck,
   Award,
+  LogOut,
+  FileSpreadsheet,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { APP } from '@/constants'
 import { BrandLogo } from '@/components/layout/BrandLogo'
-import { useIsMobile } from '@/hooks'
+import { useIsMobile, useLogout } from '@/hooks'
 import { ScrollToTop } from '@/components/layout/ScrollToTop'
 
-// ─── Admin Layout ───────────────────────────────────────────────────────────────
 
-import { FileSpreadsheet } from 'lucide-react'
 
 // ─── Admin Layout Groups ────────────────────────────────────────────────────────
 
@@ -90,6 +90,7 @@ export function AdminLayout() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
   const isMobile = useIsMobile()
+  const logout = useLogout()
 
   const isActive = (href: string) => {
     if (href === '/admin') return location.pathname === '/admin'
@@ -195,15 +196,25 @@ export function AdminLayout() {
           ))}
         </nav>
 
-        {/* Back to Store */}
-        <div className="border-t border-border p-2">
+        {/* Sidebar Footer Actions */}
+        <div className="border-t border-border p-2 space-y-1">
           <Link
             to="/"
-            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+            title={collapsed ? "Back to Store" : undefined}
           >
             <ChevronLeft className="h-4 w-4 shrink-0" />
             {!collapsed && <span>Back to Store</span>}
           </Link>
+          <button
+            onClick={() => logout.mutate()}
+            disabled={logout.isPending}
+            className="w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer"
+            title={collapsed ? "Log Out" : undefined}
+          >
+            <LogOut className="h-4 w-4 shrink-0" />
+            {!collapsed && <span>{logout.isPending ? 'Logging out...' : 'Log Out'}</span>}
+          </button>
         </div>
       </aside>
 
@@ -221,6 +232,15 @@ export function AdminLayout() {
           <span className="text-xs font-medium text-muted-foreground border border-border bg-muted/40 px-2.5 py-1 rounded-full">
             Admin Panel
           </span>
+          <button
+            onClick={() => logout.mutate()}
+            disabled={logout.isPending}
+            className="flex items-center gap-2 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 px-3 py-1.5 rounded-lg border border-rose-500/20 transition-colors cursor-pointer"
+            title="Log Out"
+          >
+            <LogOut className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">{logout.isPending ? 'Logging out...' : 'Log Out'}</span>
+          </button>
         </header>
 
         {/* Page Content */}
