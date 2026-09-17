@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Search, X } from 'lucide-react'
+import { Search, X, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useDebounce } from '@/hooks'
 
@@ -8,10 +8,11 @@ import { useDebounce } from '@/hooks'
 interface ShopSearchProps {
   value?: string
   onChange: (value: string | undefined) => void
+  isSearching?: boolean
   className?: string
 }
 
-export default function ShopSearch({ value = '', onChange, className }: ShopSearchProps) {
+export default function ShopSearch({ value = '', onChange, isSearching, className }: ShopSearchProps) {
   const [local, setLocal] = useState(value)
   const debouncedValue = useDebounce(local, 400)
   const isInitialMount = useRef(true)
@@ -32,7 +33,11 @@ export default function ShopSearch({ value = '', onChange, className }: ShopSear
 
   return (
     <div className={cn('relative', className)}>
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+      {isSearching ? (
+        <Loader2 className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-blue-500 animate-spin pointer-events-none" />
+      ) : (
+        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+      )}
       <input
         type="search"
         placeholder="Search products..."

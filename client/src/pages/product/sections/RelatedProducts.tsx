@@ -94,10 +94,10 @@ export function RecentlyViewedProducts({ currentProductId }: RecentlyViewedProps
               </p>
               {product.ratingsCount > 0 && (
                 <div className="flex items-center gap-1">
-                  <span className="text-[10px] font-bold text-success-700 dark:text-success-400">
+                  <span className="text-[10px] font-bold text-amber-700 dark:text-amber-400">
                     {product.ratingsAverage.toFixed(1)}
                   </span>
-                  <Star className="h-2.5 w-2.5 fill-success-600 text-success-600 dark:fill-success-400 dark:text-success-400" />
+                  <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />
                 </div>
               )}
               <p className="text-sm font-bold text-foreground">{formatPrice(product.price)}</p>

@@ -48,7 +48,7 @@ export function BulkImportModal({ isOpen, onClose }: BulkImportModalProps) {
   // Execute Mutation (with batch chunking to prevent 413 payload limit errors)
   const executeMutation = useMutation({
     mutationFn: async (validItems: BulkPreviewItem[]) => {
-      const BATCH_SIZE = 50
+      const BATCH_SIZE = 25
       let createdCount = 0
       let updatedCount = 0
       let totalExecuted = 0
